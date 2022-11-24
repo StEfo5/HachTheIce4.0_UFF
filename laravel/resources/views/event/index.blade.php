@@ -15,10 +15,7 @@
             @csrf
             <h2>
                 {{$item->name}}    
-            </h2>    
-            <p>
-                {{$item->description}}
-            </p>
+            </h2>   
             <button>
                 Перейти
             </button>

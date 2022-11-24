@@ -44,6 +44,8 @@ Route::controller(EventController::class)->group(function () {
 });
 
 Route::prefix('/event/{id}')->group(function(){
-    Route::get('/', 'index');
-    Route::post('/', 'index');
-})
+    Route::controller(EventController::class)->group(function(){
+        Route::get('/', 'about');
+        Route::post('/', 'about');
+    });
+});
