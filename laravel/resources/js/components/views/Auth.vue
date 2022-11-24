@@ -1,4 +1,73 @@
 <script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const form = ref({
+  firstname: "",
+  lastname: "",
+  email: "",
+  password: "",
+  c_password: "",
+});
+let date = new Date(Date.now() + 86400e3);
+date = date.toUTCString();
+document.cookie = "user=John; expires=" + date;
+const router = useRouter();
+const progress = ref(0);
+const maxWidth = 470;
+const progressbar = ref({
+  width: maxWidth / 3 + "px",
+});
+const getImageUrl = (name) => {
+  return new URL(`../../../assets/${name}`, import.meta.url).href;
+};
+const images = ref([
+  "two-friends-hugging.png",
+  "Guy sends a message from phone.png",
+  "Woman enters a password on a laptop.png",
+]);
+const gogo = () => {
+  if (!form.value.firstname && !form.value.firstname && progress.value === 0) {
+    alert("Введите данные!");
+    return;
+  } else if (!form.value.email && progress.value === 1) {
+    alert("Введите почту!");
+    return;
+  } else if (!form.value.password && progress.value === 2) {
+    alert("Введите пароль!");
+    return;
+  } else if (form.value.password != form.value.c_password) {
+    alert("Пароль не совпадает!");
+    return;
+  }
+  if (progress.value === 2) router.push("/dashboard");
+
+  progress.value++;
+  let n = 1;
+  let wi = maxWidth / 3 / 30;
+  let wiid = (maxWidth / 3) * progress.value;
+  let sec = setInterval(() => {
+    wiid = wiid + wi;
+    n++;
+    if (n > 30) clearInterval(sec);
+    progressbar.value.width = wiid + "px";
+  }, 1);
+  // progressbar.value.width = (maxWidth / 3) * (progress.value + 1) + "px";
+};
+const back = () => {
+  if (progress.value === 0) return;
+  progress.value--;
+  let n = 1;
+  let wi = maxWidth / 3 / 30;
+  let wiid = (maxWidth / 3) * (progress.value + 2);
+  let sec = setInterval(() => {
+    wiid = wiid - wi;
+    n++;
+    if (n > 30) clearInterval(sec);
+    progressbar.value.width = wiid + "px";
+  }, 1);
+  // progressbar.value.width = (maxWidth / 3) * (progress.value + 1) + "px";
+};
 </script>
 
 <template>
@@ -7,58 +76,141 @@
     <div class="bg-item-2"></div>
     <div class="container auth-container">
       <div class="auth-a">
-        <img
-          class="auth-img"
-          src="../../../assets/two friends hugging.png"
-          alt=""
-        />
+        <transition mode="out-in">
+          <img
+            v-if="progress === 0"
+            :class="'auth-img' + '-' + progress"
+            :src="getImageUrl(images[progress])"
+            alt=""
+          />
+          <img
+            v-else-if="progress === 1"
+            :class="'auth-img' + '-' + progress"
+            :src="getImageUrl(images[progress])"
+            alt=""
+          />
+          <img
+            v-else-if="progress === 2"
+            :class="'auth-img' + '-' + progress"
+            :src="getImageUrl(images[progress])"
+            alt=""
+          />
+        </transition>
+
         <div class="auth-b">
           <div class="auth-info">
-            <h1>ЛОГО</h1>
+            <div>
+              <button @click.prevent="back" class="auth-back">
+                <img src="../../../assets/arrow-left.svg" alt="" />
+                <span class="auth-back-desc">Назад</span>
+              </button>
 
-            <ul class="auth-info-list">
-              <li>
-                <img src="../../../assets/uil_users-alt.svg" alt="" />
-                <span>Знакомьтесь с новыми участниками</span>
-              </li>
-              <li>
-                <img src="../../../assets/uil_users-alt.svg" alt="" />
-                <span>Создавайте свое портфолио</span>
-              </li>
-              <li>
-                <img src="../../../assets/uil_users-alt.svg" alt="" />
-                <span>Проходите курсы и прокачивайте навыки</span>
-              </li>
-            </ul>
+              <h1>ЛОГО</h1>
+
+              <ul class="auth-info-list">
+                <li>
+                  <img src="../../../assets/uil_users-alt.svg" alt="" />
+                  <span>Знакомьтесь с новыми участниками</span>
+                </li>
+                <li>
+                  <img src="../../../assets/uil_users-alt.svg" alt="" />
+                  <span>Создавайте свое портфолио</span>
+                </li>
+                <li>
+                  <img src="../../../assets/uil_users-alt.svg" alt="" />
+                  <span>Проходите курсы и прокачивайте навыки</span>
+                </li>
+              </ul>
+            </div>
+
             <div class="auth-info-progress">
-              <span>1/3 этап регистрации</span>
-              <div class="auth-info-progress-bar"><div></div></div>
+              <span>{{ progress + 1 }}/3 этап регистрации</span>
+              <div class="auth-info-progress-bar">
+                <div :style="progressbar"></div>
+              </div>
             </div>
 
             <div class="progress-bar"></div>
           </div>
           <div class="auth-form">
-            <div class="auth-form-info">
-              <h1>Введите ваше имя</h1>
-              <p>Чтобы другие участники могли узнать вас</p>
-            </div>
-
-            <div class="auth-form-inputs">
-              <input
-                class="auth-form-input"
-                placeholder="Имя"
-                type="text"
-              /><input
-                class="auth-form-input"
-                placeholder="Фамилия"
-                type="text"
-              />
-              <input
-                class="auth-form-inputs-submit"
-                type="submit"
-                value="Далее"
-              />
-            </div>
+            <transition mode="out-in">
+              <div v-if="progress === 0" class="auth-form-info">
+                <h1>Введите ваше имя</h1>
+                <p>Чтобы другие участники могли узнать вас</p>
+              </div>
+              <div v-else-if="progress === 1" class="auth-form-info">
+                <h1>Введите вашу почту</h1>
+                <p>Для получения уведомлений и защиты аккаунта</p>
+              </div>
+              <div v-else-if="progress === 2" class="auth-form-info">
+                <h1>Задайте пароль</h1>
+                <p>Для безопасности аккаунта, используйте сложный пароль</p>
+              </div>
+            </transition>
+            <transition mode="out-in">
+              <form
+                class="auth-form-inputs"
+                @submit.prevent="gogo"
+                v-if="progress === 0"
+              >
+                <input
+                  class="auth-form-input"
+                  placeholder="Имя"
+                  type="text"
+                  v-model="form.firstname"
+                /><input
+                  class="auth-form-input"
+                  placeholder="Фамилия"
+                  type="text"
+                  v-model="form.lastname"
+                />
+                <input
+                  class="auth-form-inputs-submit"
+                  type="submit"
+                  value="Далее"
+                />
+              </form>
+              <form
+                class="auth-form-inputs"
+                style="gap: 65px"
+                @submit.prevent="gogo"
+                v-else-if="progress === 1"
+              >
+                <input
+                  class="auth-form-input"
+                  placeholder="Почта"
+                  type="email"
+                  v-model="form.email"
+                />
+                <input
+                  class="auth-form-inputs-submit"
+                  type="submit"
+                  value="Далее"
+                />
+              </form>
+              <form
+                class="auth-form-inputs"
+                @submit.prevent="gogo"
+                v-else-if="progress === 2"
+              >
+                <input
+                  class="auth-form-input"
+                  placeholder="Пароль"
+                  type="text"
+                  v-model="form.password"
+                /><input
+                  class="auth-form-input"
+                  placeholder="Повторите пароль"
+                  type="text"
+                  v-model="form.c_password"
+                />
+                <input
+                  class="auth-form-inputs-submit"
+                  type="submit"
+                  value="Отправить"
+                />
+              </form>
+            </transition>
           </div>
         </div>
       </div>
@@ -93,9 +245,35 @@ input::-webkit-input-placeholder {
   justify-content: space-between;
   padding: 92px 121px 72px 121px;
 }
-.auth-img {
+.auth-back {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  gap: 15px;
+}
+.auth-back-desc {
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.025em;
+  text-align: center;
+  /* Bright/01 */
+  color: #f0f0ff;
+}
+.auth-a > img {
   position: relative;
+}
+.auth-img-0 {
   top: 31px;
+}
+.auth-img-1 {
+  top: 15px;
+  height: 256px;
+}
+.auth-img-2 {
+  top: 35px;
+  height: 256px;
 }
 .auth-a {
   display: flex;
@@ -104,6 +282,11 @@ input::-webkit-input-placeholder {
   justify-content: center;
   width: 100%;
   margin-bottom: 40px;
+}
+.auth-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .auth-info h1 {
   color: #f8fafc;
@@ -127,7 +310,6 @@ input::-webkit-input-placeholder {
   line-height: 30px;
 }
 .auth-info-progress {
-  padding-top: 85px;
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -146,9 +328,8 @@ input::-webkit-input-placeholder {
   border-radius: 12px;
 }
 .auth-info-progress-bar div {
-  width: 235px;
   height: 10px;
-  background: linear-gradient(270deg, #936AFF 0.11%, #FFB471 101.19%);
+  background: linear-gradient(270deg, #936aff 0.11%, #ffb471 101.19%);
   border-radius: 12px;
 }
 
@@ -201,5 +382,14 @@ input::-webkit-input-placeholder {
   font-size: 25.2px;
   line-height: 30px;
   color: #f5f3ff;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
