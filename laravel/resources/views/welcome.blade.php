@@ -7,6 +7,7 @@
         <title>Laravel</title>
     </head>
     <body>
+        hey
     <div id="app"></div>
 @vite('resources/js/app.js')
     </body>

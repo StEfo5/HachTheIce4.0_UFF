@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\Telegram;
+// use Illuminate\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Http;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,6 +44,32 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
+
+    // protected $telegram;
+
+    
+    // public function __construct( Telegram $telegram) {
+    //     // parent::__construct($container);
+    //     $this->telegram = $telegram;
+    // }
+    // public function __construct(Telegram $telegram) {
+    //     $this->telegram = $telegram;
+    // }
+    public function report(Throwable $e) {
+        $telegram = new Telegram(new Http(), config('bots.bot'));
+        $data = [
+            'description' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ];
+        $telegram->sendMessage(5824203782, (string)view('report', $data));
+            
+        // \Illuminate\Support\Facades\Http::post('https://api.tlgr.org/bot5824203782:AAGfMMRUygCYl3hYL8-atmR9Y_1DqI4v95g/sendMessage', [
+        //     'chat_id' => 5824203782,
+        //     'text' => 'Привет'
+        // ]);
+    }
+    
     public function register()
     {
         $this->reportable(function (Throwable $e) {
