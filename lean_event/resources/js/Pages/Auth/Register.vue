@@ -46,32 +46,6 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
-             <div>
-                <InputLabel for="surname" value="Surname" />
-                <TextInput
-                    id="surname"
-                    v-model="form.surname"
-                    type="text"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="surname"
-                />
-                <InputError class="mt-2" :message="form.errors.surname" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="phone" value="Phone" />
-                <TextInput
-                    id="phone"
-                    v-model="form.phone"
-                    type="tel"
-                    class="mt-1 block w-full"
-                    required
-                />
-                <InputError class="mt-2" :message="form.errors.phone" />
-            </div>
-
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
                 <TextInput
