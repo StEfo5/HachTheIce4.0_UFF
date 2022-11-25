@@ -23,8 +23,13 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
-            $table->string('role')->nullable();
-            $table->integer('team_id')->nullable();
+            $table->string('team');
+            $table->string('track_id');
+            $table->string('region');
+            $table->integer('ceo_scores');
+            $table->integer('cto_scores');
+            $table->integer('cdo_scores');
+            $table->integer('score');
         });
     }
 

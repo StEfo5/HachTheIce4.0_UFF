@@ -56,9 +56,17 @@
             </form>
         @endif
     @endif
-
-    <form action="">
-
+    @if ($user->telegram_id == Null)
+        Вы еще не указали свой telegram id.
+    @else
+        Ваш telegram_id: {{$user->telegram_id}}.
+    @endif
+    Обновите свой telegram id, узнав его у бота @getmyid_bot: 
+    <form action="profile/telegram_id" method="POST">
+        @csrf
+        <input type="text" name="telegram_id">
+        <button>Отправить</button>
     </form>
+    Включите нашего бота <a href="http://t.me/LeanEvent_bot">http://t.me/LeanEvent_bot</a>
 </body>
 </html>

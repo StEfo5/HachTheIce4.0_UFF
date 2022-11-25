@@ -31,4 +31,11 @@ class ProfileController extends Controller
         DB::table('users')->where('id', Auth::user()->id)->update(['role' => $request->role]);
         return redirect()->route('profile');
     }
+
+    public function telegram_id(Request $request){
+        DB::table('users')
+            ->where('id', Auth::user()->id)
+            ->update(['telegram_id' => $request->telegram_id]);
+        return redirect()->route('profile');
+    }
 }

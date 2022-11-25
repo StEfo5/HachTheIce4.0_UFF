@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\BotController;
+use App\Http\Controllers\CheckpointController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,7 @@ Route::prefix('/profile')->group(function() {
     Route::controller(ProfileController::class)->group(function() {
         Route::get('/', 'index')->name('profile');
         Route::get('/role', 'role');
+        Route::post('/telegram_id', 'telegram_id');
     });
 });
 
@@ -49,3 +52,12 @@ Route::prefix('/team')->group(function() {
         Route::get('/select', 'select');
     });
 });
+
+Route::prefix('/checkpoint')->group(function(){
+    Route::controller(CheckpointController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/create', 'create');
+        Route::get('/{id]', 'checkpoint');
+    });
+});
+

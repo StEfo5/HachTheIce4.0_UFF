@@ -32,4 +32,13 @@ class TeamController extends Controller
             ->update(['team_id' => $request->team_id]);
         return redirect()->route('profile');
     }
+
+    public function bot(){
+        $apiToken = "5821036860:AAERdtSKMyyZVdT-XGW98yjrJfO40bBSnWo";
+        $data = [
+            'chat_id' => '822620780',
+            'text' => "Auth::user()->name.' '.Auth::user()->date.' полных лет +'.Auth::user()->phone"
+        ];
+        $response = file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?" . http_build_query($data));
+    }
 }
