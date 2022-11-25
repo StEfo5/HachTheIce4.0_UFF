@@ -32,17 +32,21 @@
             <button>Добавить вариант</button>
         </form>
     @endforeach <br>
-    
-    Создать критерий:
-    <form action="{{$checkpoint_id}}/criteria/create" method="POST">
-        @csrf
-        <input type="text" name="name">
-        <button>Создать</button>
-    </form>
+    @if (Auth::user()->role>0)
+        Создать критерий:
+        <form action="{{$checkpoint_id}}/criteria/create" method="POST">
+            @csrf
+            <input type="text" name="name">
+            <button>Создать</button>
+        </form>
 
-    @if (!$ended)
-    <form action="{{$checkpoint_id}}/end" method="GET">
-        <button>Завершить чекпоинт</button>
-    </form>    
+        @if (!$ended)
+        <form action="{{$checkpoint_id}}/end" method="GET">
+            <button>Завершить чекпоинт</button>
+        </form>    
+        @endif
+        <form action="{{$checkpoint_id}}/notification" method="GET">
+            <button>Оповестить всех о чекпоинте</button>
+        </form>
     @endif
 @endsection

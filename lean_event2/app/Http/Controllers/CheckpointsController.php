@@ -12,6 +12,7 @@ use App\Models\Option;
 use Carbon\Carbon;
 use DateTimeImmutable;
 use DateTime;
+use App\Http\Controllers\NotificationController;
 
 class CheckpointsController extends Controller
 {
@@ -114,11 +115,47 @@ class CheckpointsController extends Controller
             $sum+=$request->input(str($item->id));
         }
         DB::table('performances')
+            ->where('checkpoint_id', $checkpoint_id)
             ->where('team_id', $team_id)
             ->update([
                 'score' => $sum,
                 'comment' => $request->comment,
             ]);
+
+        $this_performance_id = DB::table('performances')
+            ->where('checkpoint_id', $checkpoint_id)
+            ->where('team_id', $team_id)
+            ->value('id');
+        $next_id = DB::table('performances')
+            ->where('checkpoint_id', $checkpoint_id)
+            ->where([
+                ['id', '>' , $this_performance_id],
+                ['id', '<=', $this_performance_id + 2], 
+            ])
+            ->get();
+
+        if(count($next_id) > 0){
+            $apiToken = "5824203782:AAGfMMRUygCYl3hYL8-atmR9Y_1DqI4v95g";
+            $team1 = DB::table('users')
+                ->where('id', $next_id[0]->team_id)
+                ->get()[0];
+            $data = [
+                'chat_id' => $team1->chat_id,
+                'text' => 'Время вашего выступления: '.$next_id[0]->start,
+            ];
+            $response = file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?" . http_build_query($data));
+            if (count($next_id)>1) {
+                $team2 = DB::table('users')
+                    ->where('id', $next_id[1]->team_id)
+                    ->get()[0];
+                $data2 = [
+                    'chat_id' => $team2->chat_id,
+                    'text' => 'Время вашего выступления: '.$next_id[1]->start,
+                ];
+                $response2 = file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?" . http_build_query($data2));
+            }
+        }
+
         return redirect()->route('checkpoint', [
             'checkpoint_id' => $checkpoint_id,
         ]);
@@ -142,6 +179,7 @@ class CheckpointsController extends Controller
                 ->where('id', $item->id)
                 ->update([
                     $checkpoint_role.'_score' => $score + $d_score,
+                    'score' => $item->score + $d_score,
                 ]);
         }
         DB::table('checkpoints')

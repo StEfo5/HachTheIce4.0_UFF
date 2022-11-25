@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('ceo_score')->default(0);
             $table->integer('cdo_score')->default(0);
             $table->integer('cto_score')->default(0);
+            $table->integer('score')->default(0);
             $table->integer('role')->default(0);
             $table->string('chat_id')->nullable();
         });
