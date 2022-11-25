@@ -19,11 +19,8 @@ class ProfileController extends Controller
         DB::table('users')
             ->where('id', Auth::user()->id)
             ->update([
-            'team' => $request->team,
+            'name' => $request->name,
             'region' => $request->region,
-            'ceo_id' => $request->ceo_id,
-            'cdo_id' => $request->cdo_id,
-            'cto_id' => $request->cto_id,
         ]);
         return redirect('/profile');
     }

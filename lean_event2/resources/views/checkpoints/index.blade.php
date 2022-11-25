@@ -21,9 +21,9 @@
             <input type="number" name="time"><br>
             Для какой роли
             <select name="role" id="">
-                <option value="CEO">CEO</option>
-                <option value="CDO">CDO</option>
-                <option value="CTO">CTO</option>
+                <option value="ceo">CEO</option>
+                <option value="cdo">CDO</option>
+                <option value="cto">CTO</option>
             </select>
             <button>Саздать</button>
         </form>

@@ -21,16 +21,13 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('team')->nullable();
             $table->string('track_id')->nullable();
             $table->string('region')->nullable();
             $table->integer('ceo_score')->default(0);
             $table->integer('cdo_score')->default(0);
             $table->integer('cto_score')->default(0);
-            $table->string('ceo_id')->nullable();
-            $table->string('cto_id')->nullable();
-            $table->string('cdo_id')->nullable();
             $table->integer('role')->default(0);
+            $table->string('chat_id')->nullable();
         });
     }
 

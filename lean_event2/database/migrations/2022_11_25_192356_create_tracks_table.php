@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('checkpoints', function (Blueprint $table) {
+        Schema::create('tracks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->datetime('start');
-            $table->integer('time');
             $table->string('name');
-            $table->string('description');
-            $table->string('role');
-            $table->boolean('ended')->default(false);
         });
     }
 
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkpoints');
+        Schema::dropIfExists('tracks');
     }
 };
