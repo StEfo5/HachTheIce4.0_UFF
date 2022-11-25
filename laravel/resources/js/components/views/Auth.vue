@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-
 const form = ref({
   firstname: "",
   lastname: "",
@@ -72,8 +71,8 @@ const back = () => {
 
 <template>
   <div class="auth">
-    <div class="bg-item-1"></div>
-    <div class="bg-item-2"></div>
+    <!-- <div class="bg-item-1"></div>
+    <div class="bg-item-2"></div> -->
     <div class="container auth-container">
       <div class="auth-a">
         <transition mode="out-in">
@@ -258,7 +257,6 @@ input::-webkit-input-placeholder {
   line-height: 24px;
   letter-spacing: -0.025em;
   text-align: center;
-  /* Bright/01 */
   color: #f0f0ff;
 }
 .auth-a > img {
@@ -391,5 +389,30 @@ input::-webkit-input-placeholder {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+@media screen and (max-width: 1500px) {
+  .auth-b {
+    /* background: #8b5cf6;
+  height: 530px;
+  width: 100%;
+  border-radius: 24px;
+  display: flex; */
+    height: 100%;
+    width: 600px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+  }
+  .auth {
+    height: 100%;
+    background: none;
+  }
+  .auth-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
