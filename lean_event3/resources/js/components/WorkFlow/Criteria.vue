@@ -4,15 +4,15 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const data = ref([]);
-for (let i = 1; i <= 6; i++) {
-  data.value.push({
-    name: "UFF " + i,
-    time: "12:00",
-    ready: "datatat",
-    points: i,
-    com: "Комментарии",
-  });
-}
+// for (let i = 1; i <= 6; i++) {
+//   data.value.push({
+//     name: "UFF " + i,
+//     time: "12:00",
+//     ready: "datatat",
+//     points: i,
+//     com: "Комментарии",
+//   });
+// }
 // const formCrit = ref({
 //     name: "",
 //     checkpoint_id: route.params.id
@@ -21,6 +21,12 @@ for (let i = 1; i <= 6; i++) {
 //     name: "",
 //     score: undefined
 // })
+const form = ref({
+  comment: "",
+  score: [
+
+  ]
+})
 const getData = async () => {
   await axios("/api/checkpoints/" + route.params.id + "/criteria/get").then(
     (res) => {
@@ -29,7 +35,7 @@ const getData = async () => {
   );
 };
 const exp = async () => {
-  await axios.post("/api/checkpoints/" + route.params.id + "/team/" + route.params.team_id + "/expertise")
+  await axios.post("/api/checkpoints/" + route.params.id + "/team/" + route.params.team_id + "/expertise", form.value)
 }
 getData();
 const back = () => {
@@ -51,15 +57,15 @@ const back = () => {
 
     <div>
       <ul>
-        <form @submit.prevent="">
+        <form @submit.prevent="exp">
           <li v-for="n in data" :key="n">
-            <h1>
+            <h1 style="font-size: 20px">
               {{ n.name }}
             </h1>
 
             <span v-for="h in n.options" :key="h"
-              >{{ h.name }} - {{ h.score }} баллов <input type="checkbox"
-            /></span>
+              >{{ h.name }} - {{ h.score }} баллов <br><input v-model="form.score" type="checkbox"
+            /><br></span>
 
             <!-- <addOptions :id="n.id"></addOptions> -->
             <!-- <form @submit.prevent="setOptions(n.id)">
@@ -68,14 +74,20 @@ const back = () => {
             <input type="submit">
         </form> -->
           </li>
-        </form>
+        
 
         <li>
           <!-- <form @submit.prevent="setCriteria">
 <input v-model="formCrit.name" type="text">
 <input type="submit">
         </form> -->
+        <div>Комментарий</div>
+        <textarea style="border: solid 1px" v-model="form.comment" id="" cols="30" rows="10"></textarea>
         </li>
+        <li>
+          <input type="submit">
+        </li>
+        </form>
       </ul>
     </div>
     <!-- <button>Создать критерии</button>

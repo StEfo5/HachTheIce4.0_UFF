@@ -57,7 +57,7 @@
               <span> WorkFlow </span>
             </router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="/profile">
               <svg
                 width="24"
@@ -83,7 +83,7 @@
               </svg>
               <span> Профиль команды </span>
             </router-link>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>

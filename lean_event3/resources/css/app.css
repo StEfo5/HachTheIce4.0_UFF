@@ -6,7 +6,10 @@
     font-style: normal;
     font-display: auto;
 }
+table {
 
+    border-radius: 15px;
+}
 * {
     box-sizing: border-box;
     padding: 0;

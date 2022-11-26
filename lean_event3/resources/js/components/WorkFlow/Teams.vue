@@ -28,13 +28,19 @@ const getData = async () => {
     dataPerfs.value = res.data.performances;
     dataTeams.value = res.data.teams;
     for (let i = 0; i < res.data.performances.length; i++) {
-      data.value[i] = {
-      name: dataTeams.value[dataPerfs.value[i].team_id].name,
+
+
+      for (let j = 0; j < res.data.teams.length; j++) {
+        if (dataTeams.value[j].id === dataPerfs.value[i].team_id) {
+          data.value[i] = {
+            name: dataTeams.value[j].name,
       start: dataPerfs.value[i].start,
       readiness: dataPerfs.value[i].readiness,
       score: dataPerfs.value[i].score,
       comment: dataPerfs.value[i].comment
-    }
+          }
+        }
+      }
     }
     console.log(res.data.teams);
 
