@@ -15,7 +15,7 @@
 · CSS  
 · PHP  
 · Laravel 9  
-· Vue.js 
+· Vue.js  
 · Node.js 
 
 ###### Проект был разработан в рамках хакатона HACH-the-ICE 4.0
